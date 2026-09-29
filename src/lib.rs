@@ -6,6 +6,7 @@ pub mod networking {
 
 pub mod issues {
     pub mod hardware_issue;
-    pub mod network_issue;
+    pub mod connectivity_issue;
+    pub mod conversion_issue;
     pub mod issue;
 }

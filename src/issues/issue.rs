@@ -1,10 +1,10 @@
 use super::{hardware_issue::HardwareScenario, hardware_issue::HardwareReason};
-use super::{network_issue::NetworkScenario, network_issue::NetworkReason};
+use super::{connectivity_issue::ConnectivityScenario, connectivity_issue::ConnectivityReason};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Issue {
     HardwareFault { scenario: HardwareScenario, reason: HardwareReason },
-    NetworkFault { scenario: NetworkScenario, reason: NetworkReason },
+    ConnectivityFault { scenario: ConnectivityScenario, reason: ConnectivityReason },
 }
 
 impl Issue {
@@ -16,21 +16,21 @@ impl Issue {
     pub fn category(&self) -> u8 {
         match self {
             Issue::HardwareFault { .. } => 0x01,
-            Issue::NetworkFault { .. } => 0x02
+            Issue::ConnectivityFault { .. } => 0x02
         }
     }
 
     pub fn scenario(&self) -> u8 {
         match self {
             Issue::HardwareFault { scenario, .. } => *scenario as u8,
-            Issue::NetworkFault { scenario, .. } => *scenario as u8,
+            Issue::ConnectivityFault { scenario, .. } => *scenario as u8,
         }
     }
 
     pub fn reason(&self) -> u8 {
         match self {
             Issue::HardwareFault { reason, .. } => *reason as u8,
-            Issue::NetworkFault { reason, .. } => *reason as u8,
+            Issue::ConnectivityFault { reason, .. } => *reason as u8,
         }
     }
 } 
@@ -46,9 +46,9 @@ mod tests {
     }
 
     #[test]
-    fn check_network_fault_category_value() {
-        assert_eq!(Issue::NetworkFault { scenario: NetworkScenario::LoraJoinTimeout, 
-                                         reason: NetworkReason::Timeout }.category(), 0x02);
+    fn check_connectivity_fault_category_value() {
+        assert_eq!(Issue::ConnectivityFault { scenario: ConnectivityScenario::LoraJoinTimeout, 
+                                              reason: ConnectivityReason::Timeout }.category(), 0x02);
     }
 
     #[test]
@@ -58,9 +58,9 @@ mod tests {
     }
 
     #[test]
-    fn check_network_fault_scenario_value() {
-        assert_eq!(Issue::NetworkFault { scenario: NetworkScenario::LoraJoinTimeout, 
-                                         reason: NetworkReason::Timeout }.scenario(), 0x01);
+    fn check_connectivity_fault_scenario_value() {
+        assert_eq!(Issue::ConnectivityFault { scenario: ConnectivityScenario::LoraJoinTimeout, 
+                                              reason: ConnectivityReason::Timeout }.scenario(), 0x01);
     }
 
     #[test]
@@ -70,9 +70,9 @@ mod tests {
     }
 
     #[test]
-    fn check_network_fault_reason_value() {
-        assert_eq!(Issue::NetworkFault { scenario: NetworkScenario::LoraJoinTimeout, 
-                                         reason: NetworkReason::Timeout }.reason(), 0x01);
+    fn check_connectivity_fault_reason_value() {
+        assert_eq!(Issue::ConnectivityFault { scenario: ConnectivityScenario::LoraJoinTimeout, 
+                                              reason: ConnectivityReason::Timeout }.reason(), 0x01);
     }
 
     #[test]
@@ -82,8 +82,8 @@ mod tests {
     }
 
     #[test]
-    fn check_network_byte_packing() {
-        let issue = Issue::NetworkFault { scenario: NetworkScenario::LoraJoinTimeout, reason: NetworkReason::Timeout };
+    fn check_connectivity_byte_packing() {
+        let issue = Issue::ConnectivityFault { scenario: ConnectivityScenario::LoraJoinTimeout, reason: ConnectivityReason::Timeout };
         assert_eq!(issue.to_bytes(), [0x02, 0x01, 0x01]);
     }
 }

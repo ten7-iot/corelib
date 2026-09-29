@@ -1,7 +1,4 @@
-#[derive(Debug, PartialEq)]
-pub enum ConvertError {
-    OutOfRange,
-}
+use crate::issues::conversion_issue::ConvertError;
 
 pub fn convert_to_be_bytes(d: f64) -> Result<[u8; 4], ConvertError> {
     Some(d * 10_000_000.0)
